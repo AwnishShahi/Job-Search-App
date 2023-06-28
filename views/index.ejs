@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        background-color: #343a40;
+        color: #fff;
+        padding-top: 50px;
+    }
+
+    .jumbotron {
+        background-color: #212529;
+        color: #ff0800;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 0.3rem;
+    }
+
+    .jumbotron h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .card {
+        background-color: #212529;
+        color: #fff;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .card-subtitle {
+        color: #adb5bd;
+    }
+
+    .card-text {
+        max-height: 100px;
+        overflow: hidden;
+    }
+
+    .card-link {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .histogram {
+        margin-top: 50px;
+        background-color: #212529;
+        padding: 20px;
+        border-radius: 0.3rem;
+    }
+
+    .histogram-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .histogram-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .histogram-item-label {
+        width: 120px;
+        color: #adb5bd;
+    }
+
+    .histogram-item-bar-container {
+        flex: 1;
+        height: 20px;
+        border-radius: 3px;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .histogram-item-bar {
+        height: 100%;
+        transition: width 0.5s ease-in-out;
+    }
+
+    .histogram-item-value {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    /* Custom Colors for Bars */
+    .histogram-item:nth-child(1) .histogram-item-bar {
+        background-color: #ff0000;
+    }
+
+    .histogram-item:nth-child(2) .histogram-item-bar {
+        background-color: #00ff00;
+    }
+
+    .histogram-item:nth-child(3) .histogram-item-bar {
+        background-color: #0000ff;
+    }
+
+    .histogram-item:nth-child(4) .histogram-item-bar {
+        background-color: #ffff00;
+    }
+
+    .histogram-item:nth-child(5) .histogram-item-bar {
+        background-color: #ff00ff;
+    }
+
+    .histogram-item:nth-child(6) .histogram-item-bar {
+        background-color: #00ffff;
+    }
+
+    .histogram-item:nth-child(7) .histogram-item-bar {
+        background-color: #ff8000;
+    }
+
+    /* Bar Width Calculation */
+    <% Object.keys(histogramData).forEach(function(salary, index) { %>
+        .histogram-item:nth-child(<%= index + 1 %>) .histogram-item-bar {
+            width: <%= histogramData[salary] %>%;
+        }
+    <% }); %>
+</style>
+
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Search Results for <%= head %></h1>
+        </div>
+        <div class="row">
+            <% jobs.forEach(function(job) { %>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= job.title %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= job.company.display_name %></h6>
+                        <% if (job.contract_type) { %>
+                            <p class="card-text">Contract Type: <%= job.contract_type %></p>
+                        <% } %>
+                        <a href="<%= job.redirect_url %>" class="card-link">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+
+        <% if (histogramData) { %>
+    <div class="histogram">
+        <h2 class="histogram-title">Salary Distribution for <%= head %></h2>
+        <% const frequencies = Object.values(histogramData);
+           const maxFrequency = Math.max(...frequencies);
+           Object.keys(histogramData).forEach(function(salary, index) {
+               const frequency = histogramData[salary];
+               const percentage = (frequency / maxFrequency) * 100;
+        %>
+        <div class="histogram-item">
+            <div class="histogram-item-label"><%= salary %></div>
+            <div class="histogram-item-bar-container">
+                <div class="histogram-item-bar" style="width: <%= percentage %>%;"></div>
+            </div>
+            <div class="histogram-item-value"><%= frequency %></div>
+        </div>
+        <% }); %>
+    </div>
+<% } %>
+
+    </div>
+</body>
+
+</html>

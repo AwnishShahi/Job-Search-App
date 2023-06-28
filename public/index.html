@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Search</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+ </head>
+<body>
+    <div class="container">
+    <div class="jumbotron text-center mt-5">
+      <h1 class="display-4">Job Search</h1>
+    </div>
+    <form id="jobSearchForm" class="mt-5" action="/jobsearch" method="post"> <!-- Add action and method attributes -->
+      <div class="mb-3">
+        <label for="jobRole" class="form-label text-white">Job Role:</label>
+        <input type="text" class="form-control" id="jobRole" name="jobRole" placeholder="Enter job role" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="city" class="form-label text-white">City:</label>
+        <input type="text" class="form-control" id="city" name="city" placeholder="Enter city" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Search Jobs</button>
+    </form>
+
+    <div id="jobResults"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="app.js"></script>
+  <script src="public/jrs.js"></script>
+</body>
+</body>
+</html>
