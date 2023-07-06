@@ -126,11 +126,13 @@
     }
 
     /* Bar Width Calculation */
+    <% if (histogramData){ %>
     <% Object.keys(histogramData).forEach(function(salary, index) { %>
         .histogram-item:nth-child(<%= index + 1 %>) .histogram-item-bar {
             width: <%= histogramData[salary] %>%;
         }
     <% }); %>
+    <% } %>
 </style>
 
 

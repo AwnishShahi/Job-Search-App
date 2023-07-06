@@ -17,19 +17,35 @@ app.use(express.static("public"));
 
 // Define the POST route for job search
 app.post("/jobsearch", async (req, res) => {
+    let data1 = null;
+    let data2 = null;
+    const { jobRole, city } = req.body;
     try {
-        const { jobRole, city } = req.body;
         const apiUrl1 = `http://api.adzuna.com/v1/api/jobs/in/search/1?app_id=af3564ae&app_key=4bea16463f69402dcf534558b47bce2a&results_per_page=24&what=${jobRole}&where=${city}&content-type=application/json`;
         const apiUrl2 = `http://api.adzuna.com/v1/api/jobs/in/histogram?app_id=af3564ae&app_key=4bea16463f69402dcf534558b47bce2a&location0=India&location1=${city}&what=${jobRole}&content-type=application/json`;
         const response1 = await fetch(apiUrl1);
-        const data1 = await response1.json();
+        data1 = await response1.json();
         const response2 = await fetch(apiUrl2);
-        const data2 = await response2.json();
+        data2 = await response2.json();
         // Render the job results on the "index.ejs" view
-        res.render("index", { head: jobRole, jobs: data1.results , histogramData: data2.histogram});
+        res.render("index", {
+            head: jobRole,
+            jobs: data1.results,
+            histogramData: data2.histogram,
+        });
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).send("An error occurred while fetching job results.");
+        if (data1 == null) {
+            console.error("Error:", error);
+            res.status(500).send(
+                "An error occurred while fetching job results."
+            );
+        } else {
+            res.render("index", {
+                head: jobRole,
+                jobs: data1.results,
+                histogramData: null,
+            });
+        }
     }
 });
 
